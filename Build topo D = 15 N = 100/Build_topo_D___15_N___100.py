@@ -213,3 +213,58 @@ with open("topologies_D15_N100.json", "w") as f:
     json.dump(json_data, f, indent=2)
 
 print("Saved to topologies_D15_N100.json")
+
+# Load Topologies for Model
+def load_topos_for_model(json_file, topo_id):
+    with open(json_file, "r") as f:
+        data = json.load(f)
+    
+    topo = data["topologies"][topo_id]
+    node_ids = sorted([k for k in topo.keys() if k != "topo_id"])
+    N = len(node_ids)
+
+    # Adjacency matrix A
+
+    A = np.zeros((N, N), dtype=np.float32)
+
+    for i in node_ids:
+        i = int(i)
+        for j in topo[str(i)]["neighbors"]:
+            j = int(j)
+            A[i, j] = 1.0
+            A[j, i] = 1.0   
+
+    # Tree Structure
+    
+    children = [[] for _ in range(N)]
+    for i in node_ids:
+        p = topo[i]["parentID"]
+        if p is not None:
+            children[p].append(int(i))
+
+    def count_descendants(u):
+        return sum(1 + count_descendants(c) for c in children[u])
+
+
+    # Node features X
+    X = np.zeros((N, 6), dtype=np.float32)
+
+    for i in node_ids:
+        i = int(i)
+        num_children = len(children[i])
+        is_leaf = 1 if num_children == 0 else 0
+        is_root = 1 if topo[str(i)]["parentID"] is None else 0
+
+        X[i] = [
+            i,                          # x1: ID
+            num_children,               # x2: children count
+            is_leaf,                    # x3: leaf
+            topo[str(i)]["level"],      # x4: hop distance
+            is_root,                    # x5: root
+            count_descendants(i)        # x6: descendants
+        ]
+
+    return A, X
+
+
+    
