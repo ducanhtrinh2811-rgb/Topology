@@ -264,6 +264,7 @@ def load_topos_for_model(json_file, topo_id):
             count_descendants(i)        # x6: descendants
         ]
 
-  
+    return A, X
+
 
     
