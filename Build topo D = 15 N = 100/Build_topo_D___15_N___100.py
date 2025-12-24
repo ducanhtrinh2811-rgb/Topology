@@ -83,7 +83,7 @@ def generate_valid_topo(num_node=150, x_range=100, y_range=100, comm_range=20, m
         node_list = []
         node_list.append(Node(0, center_x, center_y))
 
-        # Dùng set để chống trùng tọa độ nhanh hơn
+        # Dùng set để chống trùng tọa độ 
         used_pos = {(center_x, center_y)}
         for i in range(1, num_node):
             while True:
@@ -120,7 +120,7 @@ def generate_valid_topo(num_node=150, x_range=100, y_range=100, comm_range=20, m
 
     raise RuntimeError("Không tìm được topo hợp lệ sau quá nhiều lần thử.")
 
-# === THỰC THI LẠI SAU KHI SỬA HÀM ===
+
 node_list = generate_valid_topo()
 
 # Hiển thị thông tin node (kiểm tra vị trí node 0)
@@ -264,7 +264,6 @@ def load_topos_for_model(json_file, topo_id):
             count_descendants(i)        # x6: descendants
         ]
 
-    return A, X
-
+  
 
     
