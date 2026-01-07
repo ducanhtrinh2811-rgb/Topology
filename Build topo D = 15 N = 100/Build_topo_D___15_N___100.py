@@ -19,7 +19,8 @@ class Node:
 def distance(a, b):
     return math.hypot(a.x - b.x, a.y - b.y)
 
-# BFS TREE
+# BFS Tree
+
 def build_bfs_tree(node_list, source=0):
     N = len(node_list)
     visited = [False] * N
@@ -96,7 +97,8 @@ def generate_valid_topo(N=100, D=15, area=100, max_attempts=10000):
 
     raise RuntimeError("Cannot generate valid topology")
 
-# SAVE TO JSON 
+# Lưu vào file JSON
+
 def save_topologies(filename, num_topo=30, N=100, D=15):
 
     all_topos = []
@@ -131,7 +133,8 @@ def save_topologies(filename, num_topo=30, N=100, D=15):
     print(f"Saved to {filename}")
 
 
-# LOAD TOPO FOR MODEL
+# load topology cho model
+
 def load_topos_for_model(json_file, topo_id):
 
     with open(json_file, "r") as f:
@@ -170,7 +173,8 @@ def load_topos_for_model(json_file, topo_id):
         "level": level
     }
 
-# MAIN
+# Test chức năng
+
 if __name__ == "__main__":
     save_topologies(
         filename="topologies_D15_N100.json",
