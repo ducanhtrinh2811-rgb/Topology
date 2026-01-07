@@ -4,8 +4,8 @@ import json
 import numpy as np
 from collections import deque
 
+# Định nghĩa node
 
-# Định nghĩa Node
 class Node:
     def __init__(self, ID, x, y):
         self.ID = ID
@@ -18,6 +18,7 @@ class Node:
 
 def distance(a, b):
     return math.hypot(a.x - b.x, a.y - b.y)
+
 
 # BFS Tree
 
@@ -61,7 +62,6 @@ def compute_levels(node_list, source=0):
     for i in range(N):
         node_list[i].level = level[i]
 
-
 # Tạo topology hợp lệ
 
 def generate_valid_topo(N=100, D=15, area=100, max_attempts=10000):
@@ -97,7 +97,8 @@ def generate_valid_topo(N=100, D=15, area=100, max_attempts=10000):
 
     raise RuntimeError("Cannot generate valid topology")
 
-# Lưu vào file JSON
+
+# Lưu topology vào file JSON
 
 def save_topologies(filename, num_topo=30, N=100, D=15):
 
@@ -121,7 +122,7 @@ def save_topologies(filename, num_topo=30, N=100, D=15):
             "nodes": nodes_dict
         })
 
-        print(f"Generated topo {t+1}/{num_topo}")
+        print(f"  Generated topo {t+1}/{num_topo}")
 
     with open(filename, "w") as f:
         json.dump({
@@ -130,10 +131,10 @@ def save_topologies(filename, num_topo=30, N=100, D=15):
             "topologies": all_topos
         }, f, indent=2)
 
-    print(f"Saved to {filename}")
+    print(f"[✓] Saved to {filename}")
 
 
-# load topology cho model
+# Load topology từ file JSON cho model
 
 def load_topos_for_model(json_file, topo_id):
 
@@ -173,15 +174,23 @@ def load_topos_for_model(json_file, topo_id):
         "level": level
     }
 
-# Test chức năng
+
+# Tạo và lưu nhiều topology với các cấu hình khác nhau
 
 if __name__ == "__main__":
-    save_topologies(
-        filename="topologies_D15_N100.json",
-        num_topo=30,
-        N=100,
-        D=15
-    )
 
-    data = load_topos_for_model("topologies_D15_N100.json", topo_id=0)
-    print("Adjacency matrix shape:", data["A"].shape)
+    D_list = [15, 30, 45]
+    N_list = [100, 150, 300, 500, 1000]
+    NUM_TOPO = 30
+
+    for D in D_list:
+        for N in N_list:
+            print(f"\n=== Configuration D={D}, N={N} ===")
+
+            filename = f"topologies_D{D}_N{N}.json"
+            save_topologies(
+                filename=filename,
+                num_topo=NUM_TOPO,
+                N=N,
+                D=D
+            )
