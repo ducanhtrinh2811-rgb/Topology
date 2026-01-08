@@ -131,7 +131,7 @@ def save_topologies(filename, num_topo=30, N=100, D=15):
             "topologies": all_topos
         }, f, indent=2)
 
-    print(f"[✓] Saved to {filename}")
+    print(f"saved to {filename}")
 
 
 # Load topology từ file JSON cho model
